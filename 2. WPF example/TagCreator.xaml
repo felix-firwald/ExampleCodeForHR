@@ -1,0 +1,177 @@
+﻿<UserControl x:Class="Incas.Templates.Views.Controls.TagCreator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Incas.Templates.Views.Controls" xmlns:fa="http://schemas.fontawesome.io/icons/"
+             mc:Ignorable="d" 
+             d:DesignHeight="390" d:DesignWidth="600">
+    <Border x:Name="MainBorder" Margin="5" CornerRadius="5" Background="{DynamicResource Dark}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="55*"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="4"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2">
+                <!--<fa:FontAwesome Style="{DynamicResource IconButton}" Icon="ArrowCircleDown" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="18" ToolTip="Свернуть / Развернуть окно" Cursor="Hand" MouseDown="TurnSizeClick"/>-->
+                <CheckBox x:Name="ExpanderButton" Style="{StaticResource ExpanderButton}" Checked="MaximizeClick" Unchecked="MinimizeClick"/>
+                <Rectangle Width="1" Fill="{DynamicResource Element}" Margin="0,5,0,5" Opacity="0.5" />
+                <Label x:Name="NumberUp" Style="{DynamicResource LabelElement}" MinWidth="40" Visibility="Collapsed" Content="{Binding OrderNumber, FallbackValue=0}" Foreground="{DynamicResource Icon}" Cursor="Hand" ToolTip="Инкремент номера" ToolTipService.InitialShowDelay="200" MouseDown="UpClick" VerticalAlignment="Center" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                </Label>
+                <Label Style="{DynamicResource LabelElement}" Content="[" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{DynamicResource DarkLight}"/>
+                <TextBox x:Name="TagName" Style="{DynamicResource TextBoxTransparent}" Text="{Binding NameOfTag, UpdateSourceTrigger=PropertyChanged}" MaxLength="25">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Копировать" Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="Вставить" Command="ApplicationCommands.Paste"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Label Style="{DynamicResource LabelElement}" Content="]" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{DynamicResource DarkLight}"/>
+            </StackPanel>
+
+            <Rectangle Grid.Row="1" Fill="{DynamicResource Element}" Grid.ColumnSpan="2" />
+
+            <StackPanel Grid.Row="2" x:Name="ContentPanel">
+
+                <TextBox Style="{DynamicResource TextBoxMain}" Tag="Отображаемое название" Text="{Binding VisibleName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="50" TextWrapping="Wrap">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Копировать" Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="Вставить" Command="ApplicationCommands.Paste"/>
+                            <MenuItem Header="Применить наименование" Click="CopyNameToVisible"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <ComboBox x:Name="ComboType" Style="{DynamicResource ComboBoxMain}" SelectedIndex="{Binding TypeOfTagValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxDropDownHeight="240">
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Success}" Width="5" Height="5"/>
+                            <Label Content="Короткий текст" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Ручной ввод" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Success}" Width="5" Height="5"/>
+                            <Label Content="Многострочный текст" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Ручной ввод" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Yellow}" Width="5" Height="5"/>
+                            <Label Content="Перечисление" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Выпадающий список" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Yellow}" Width="5" Height="5"/>
+                            <Label Content="Данные" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Окно выбора записи из базы данных" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Yellow}" Width="5" Height="5"/>
+                            <Label Content="Дата" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Выбор даты с выводом в необходимом формате" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Yellow}" Width="5" Height="5"/>
+                            <Label Content="Число" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Ввод данных в числовом формате" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Error}" Width="5" Height="5"/>
+                            <Label Content="Константа" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Неизменяемое значение" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Error}" Width="5" Height="5"/>
+                            <Label Content="Скрытое поле" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Поле, которое можно заполнить только автоматически" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11"/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Purple}" Width="5" Height="5"/>
+                            <Label Content="Генератор" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Заполнение выделенной формы для генерации текста" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11" Cursor=""/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem >
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Purple}" Width="5" Height="5"/>
+                            <Label Content="Макрогенератор" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Заполнение форм для создания большого текста" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11" Cursor=""/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                    <ComboBoxItem>
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse Fill="{DynamicResource Purple}" Width="5" Height="5"/>
+                            <Label Content="Таблица" Style="{DynamicResource LabelElement}"/>
+                            <Label Content="Заполнение таблицы" Style="{DynamicResource LabelElement}" Foreground="{DynamicResource Icon}" FontSize="11" Cursor=""/>
+                        </StackPanel>
+                    </ComboBoxItem>
+                </ComboBox>
+                <TextBox x:Name="MainTextBox" Style="{DynamicResource TextBoxBig}" Tag="{Binding DescriptionText}" Text="{Binding DefaultValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding DefaultValueVisibility}" MaxLength="500" TextWrapping="Wrap">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Вырезать" Click="ApplicationCommands.Cut"/>
+                            <MenuItem Header="Копировать" Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="Вставить" Command="ApplicationCommands.Paste"/>
+                            <MenuItem Header="Вставить виртуальный тег" Click="AddVirtualTagClick"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <TextBox x:Name="Description" Style="{DynamicResource TextBoxBig}" Tag="Описание тега (будет показано в форме)" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding DescriptionVisibility}" MaxLength="200" TextWrapping="Wrap">
+                    <TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Копировать" Command="ApplicationCommands.Copy"/>
+                            <MenuItem Header="Вставить" Command="ApplicationCommands.Paste"/>
+                        </ContextMenu>
+                    </TextBox.ContextMenu>
+                </TextBox>
+                <Button Style="{DynamicResource ButtonMain}" Visibility="{Binding ButtonRelationVisibility}" Click="DefineRelationClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Fill="White" VerticalAlignment="Center" Data="M8.5.5a.5.5 0 0 0-1 0v.518A7 7 0 0 0 1.018 7.5H.5a.5.5 0 0 0 0 1h.518A7 7 0 0 0 7.5 14.982v.518a.5.5 0 0 0 1 0v-.518A7 7 0 0 0 14.982 8.5h.518a.5.5 0 0 0 0-1h-.518A7 7 0 0 0 8.5 1.018zm-6.48 7A6 6 0 0 1 7.5 2.02v.48a.5.5 0 0 0 1 0v-.48a6 6 0 0 1 5.48 5.48h-.48a.5.5 0 0 0 0 1h.48a6 6 0 0 1-5.48 5.48v-.48a.5.5 0 0 0-1 0v.48A6 6 0 0 1 2.02 8.5h.48a.5.5 0 0 0 0-1zM8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+                        <Label Content="Определить привязку" Foreground="White"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{DynamicResource ButtonMain}" Visibility="{Binding ButtonGeneratorVisibility}" Click="DefineGeneratorClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Fill="White" VerticalAlignment="Center" Data="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>
+                        <Label Content="Определить генератор" Foreground="White"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{DynamicResource ButtonMain}" Visibility="{Binding DescriptionVisibility}" Click="EditScriptClick">
+                    <StackPanel Orientation="Horizontal">
+                        <Path Fill="White" VerticalAlignment="Center" Data="M11 13a5 5 0 1 0-4.975-5.5H4A1.5 1.5 0 0 0 2.5 6h-1A1.5 1.5 0 0 0 0 7.5v1A1.5 1.5 0 0 0 1.5 10h1A1.5 1.5 0 0 0 4 8.5h2.025A5 5 0 0 0 11 13m.5-7.5v2h2a.5.5 0 0 1 0 1h-2v2a.5.5 0 0 1-1 0v-2h-2a.5.5 0 0 1 0-1h2v-2a.5.5 0 0 1 1 0"/>
+                        <Label Content="Привязанная команда" Foreground="White"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <Rectangle Width="1" Fill="{DynamicResource Element}" Grid.Column="1" HorizontalAlignment="Left"  Margin="-2,5,0,5" Opacity="0.5" />
+            <fa:FontAwesome Style="{DynamicResource IconButton}" Icon="Remove" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" ToolTip="Удалить тег" Cursor="Hand" MouseDown="RemoveClick" Grid.Column="1"/>
+            <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                <fa:FontAwesome Style="{DynamicResource IconButton}" Icon="ArrowUp" MouseDown="UpClick" />
+                <Label Style="{DynamicResource LabelElement}" Content="{Binding OrderNumber, FallbackValue=0}" HorizontalAlignment="Center" FontSize="14"/>
+                <fa:FontAwesome Style="{DynamicResource IconButton}" Icon="ArrowDown" MouseDown="DownClick" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
